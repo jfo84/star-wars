@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import Table, {
   TableBody,
@@ -36,8 +36,10 @@ class PeopleTable extends Component {
     const zeroIndexPage = page - 1;
 
     // Redirect if we have a person detail page ID
+    // Just nil it out when we navigate to People again
+    // With two routes this is fine, but obviously it will become cumbersome
     if (personId) {
-      return <Redirect to="/people/:id" id={personId} />;
+      this.props.history.push(`/person/${personId}`);
     }
 
     return(
@@ -94,4 +96,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PeopleTable);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PeopleTable));
