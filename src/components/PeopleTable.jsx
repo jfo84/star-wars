@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-
 import Table, {
   TableBody,
   TableCell,
@@ -39,9 +39,14 @@ class PeopleTable extends Component {
   };
 
   render() {
-    const { fetchingPeople, people, peopleCount, page } = this.props;
+    const { fetchingPeople, personId, people, peopleCount, page } = this.props;
 
     const zeroIndexPage = page - 1;
+
+    // Redirect if we have a person detail page ID
+    if (personId) {
+      return <Redirect to="/people/:id" id={personId} />;
+    }
 
     return(
       <TableContainer>
@@ -88,6 +93,7 @@ class PeopleTable extends Component {
 const mapStateToProps = (state) => {
   return {
     fetchingPeople: state.fetchingPeople,
+    personId: state.personId,
     people: state.people,
     peopleCount: state.peopleCount,
     page: state.page

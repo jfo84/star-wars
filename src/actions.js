@@ -55,11 +55,12 @@ export const fetchPeople = () => {
   }
 };
 
-const requestPerson = () => {
+const requestPerson = (url) => {
   return {
     type: actionTypes.REQUEST_PERSON,
     payload: {
-      fetchingPerson: true
+      fetchingPerson: true,
+      url
     }
   };
 };
@@ -76,7 +77,7 @@ const receivePerson = (response) => {
 
 export const fetchPerson = (url) => {
   return (dispatch) => {
-    dispatch(requestPerson());
+    dispatch(requestPerson(url));
 
     const options = {};
     

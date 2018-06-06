@@ -3,6 +3,7 @@ import * as actionTypes from './actionTypes';
 const initialState = {
   fetchingPeople: false, 
   fetchingPerson: false,
+  personId: null,
   people: [],
   peopleCache: {},
   peopleCount: 10,
@@ -15,9 +16,14 @@ const reducer = (state = initialState, action) => {
 
   switch(action.type) {
     case(actionTypes.REQUEST_PERSON):
+    const { fetchingPerson, url } = payload;
+    // We don't have ID's so we strip the ID off the end of the URL
+    const personId = payload.url.split('/').filter(segment => segment != "")[0];
+
     return {
       ...state,
-      ...payload
+      fetchingPerson,
+      personId
     };
     case(actionTypes.RECEIVE_PERSON):
       return {

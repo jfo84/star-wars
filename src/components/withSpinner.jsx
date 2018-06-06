@@ -52,7 +52,7 @@ const WrappedContainer = styled.div`
   position: relative;
 `;
 
-const withSpinner = (Component, text = 'Loading...') => (
+const withSpinner = (Component, fetching, text = 'Loading...') => (
   (props) => (
     <WrappedContainer>
       <Component {...props} />

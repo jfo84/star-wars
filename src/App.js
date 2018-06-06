@@ -14,14 +14,13 @@ import withSpinner from './components/withSpinner';
 class App extends Component {
   render() {
     const { fetching } = this.props;
-    const TableComponent = fetching ? withSpinner(PeopleTable) : PeopleTable;
 
     return (
       <Router>
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/people" />} />
-          <Route path="/people" component={TableComponent} />
-          <Route path="/people/:id" component={Person} />
+          <Route path="/people" component={withSpinner(PeopleTable, fetching)} />
+          <Route path="/people/:id" component={withSpinner(Person, fetching)} />
         </Switch>
       </Router>
     );
@@ -30,7 +29,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    fetching: state.fetchingPerson
+    fetching: state.fetchingPerson || state.fetchingPeople
   };
 };
 
