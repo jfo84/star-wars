@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import styled from 'styled-components';
 import Table, {
   TableBody,
@@ -31,16 +31,9 @@ class PeopleTable extends Component {
   };
 
   render() {
-    const { personId, people, peopleCount, page } = this.props;
+    const { people, peopleCount, page, perPage } = this.props;
 
     const zeroIndexPage = page - 1;
-
-    // Redirect if we have a person detail page ID
-    // Just nil it out when we navigate to People again
-    // With two routes this is fine, but obviously it will become cumbersome
-    if (personId) {
-      this.props.history.push(`/person/${personId}`);
-    }
 
     return(
       <TableContainer>
@@ -67,7 +60,7 @@ class PeopleTable extends Component {
         <TablePagination
           component="div"
           count={peopleCount}
-          rowsPerPage={10}
+          rowsPerPage={perPage}
           rowsPerPageOptions={[]}
           page={zeroIndexPage}
           backIconButtonProps={{ 'aria-label': 'Previous Page' }}
@@ -81,10 +74,11 @@ class PeopleTable extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    personId: state.personId,
-    people: state.people,
-    peopleCount: state.peopleCount,
-    page: state.page
+    personId: state.person.id,
+    people: state.people.data,
+    peopleCount: state.people.count,
+    page: state.page.index,
+    perPage: state.page.perPage
   };
 };
 

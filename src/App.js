@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  BrowserRouter as Router,
   Route,
   Switch,
   Redirect
-} from 'react-router-dom';
+} from 'react-router';
 
 import Person from './components/Person';
 import PeopleTable from './components/PeopleTable';
@@ -16,20 +15,20 @@ class App extends Component {
     const { fetching } = this.props;
 
     return (
-      <Router>
+      <div>
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/people" />} />
           <Route path="/people" component={withSpinner(PeopleTable, fetching)} />
           <Route path="/people/:id" component={withSpinner(Person, fetching)} />
         </Switch>
-      </Router>
+      </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    fetching: state.fetchingPerson || state.fetchingPeople
+    fetching: state.person.fetching || state.people.fetching
   };
 };
 

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { push } from 'react-router-redux';
 
 import * as actionTypes from './actionTypes';
 
@@ -8,7 +9,7 @@ const requestPeople = () => {
   return {
     type: actionTypes.REQUEST_PEOPLE,
     payload: {
-      fetchingPeople: true
+      fetching: true
     }
   };
 };
@@ -17,9 +18,9 @@ const receivePeople = (response, page) => {
   return {
     type: actionTypes.RECEIVE_PEOPLE,
     payload: {
-      fetchingPeople: false,
-      people: response.data.results,
-      peopleCount: response.data.count,
+      fetching: false,
+      data: response.data.results,
+      count: response.data.count,
       page: page
     }
   };
@@ -29,15 +30,15 @@ const populatePeople = (people) => {
   return {
     type: actionTypes.POPULATE_PEOPLE,
     payload: {
-      people
+      data: people
     }
   };
 };
 
 export const fetchPeople = () => {
   return (dispatch, getState) => {
-    const { page, peopleCache } = getState();
-    const cachedPeople = peopleCache[page];
+    const { page, people } = getState();
+    const cachedPeople = people.cache[page.index];
     // If we hit the cache, trigger a state change
     // be re-populating people and don't fetch
     if (cachedPeople) {
@@ -49,7 +50,7 @@ export const fetchPeople = () => {
 
     const options = {};
     
-    return axios.get(`${PEOPLE_URL}?page=${page}`, options).then((response) => {
+    return axios.get(`${PEOPLE_URL}?page=${page.index}`, options).then((response) => {
       dispatch(receivePeople(response, page));
     });
   }
@@ -59,7 +60,7 @@ const requestPerson = (url) => {
   return {
     type: actionTypes.REQUEST_PERSON,
     payload: {
-      fetchingPerson: true,
+      fetching: true,
       url
     }
   };
@@ -69,8 +70,8 @@ const receivePerson = (response) => {
   return {
     type: actionTypes.RECEIVE_PERSON,
     payload: {
-      fetchingPerson: false,
-      person: response.data
+      fetching: false,
+      data: response.data
     }
   };
 };
@@ -80,9 +81,14 @@ export const fetchPerson = (url) => {
     dispatch(requestPerson(url));
 
     const options = {};
-    
+
     return axios.get(url, options).then((response) => {
+      // We don't have ID's so we strip the ID off the end of the URL
+      const segments = url.split('/').filter(segment => segment !== "");
+      const personId = segments[segments.length - 1];
+
       dispatch(receivePerson(response));
+      dispatch(push(`/person/${personId}`));
     });
   }
 };
@@ -91,7 +97,7 @@ export const changePage = (page) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.CHANGE_PAGE,
-      page
+      index: page
     });
     dispatch(fetchPeople());
   }
