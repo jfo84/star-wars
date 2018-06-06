@@ -15,14 +15,6 @@ import PeopleTableHead from './PeopleTableHead';
 let TableContainer = styled.div`
 `;
 
-let LoadingRow = () => {
-  return(
-    <TableRow>
-      <TableCell>Loading...</TableCell>
-    </TableRow>
-  );
-};
-
 class PeopleTable extends Component {
   componentWillMount() {
     this.props.fetchPeople();
@@ -39,7 +31,7 @@ class PeopleTable extends Component {
   };
 
   render() {
-    const { fetchingPeople, personId, people, peopleCount, page } = this.props;
+    const { personId, people, peopleCount, page } = this.props;
 
     const zeroIndexPage = page - 1;
 
@@ -53,26 +45,21 @@ class PeopleTable extends Component {
         <Table>
           <PeopleTableHead />
           <TableBody>
-            {fetchingPeople ?
-              <LoadingRow /> :
-              people.map((person, index) => {
-                return(
-                  <TableRow
-                    hover
-                    onClick={event => this.handleClick(event, person.url)}
-                    tabIndex={-1}
-                    key={index}
-                    className={'person-row' + index}
-                  >
-                    <TableCell className={'name' + index}>{person.name}</TableCell>
-                    <TableCell className={'height' + index}>{person.height}</TableCell>
-                    <TableCell className={'hair-color' + index}>{person.hair_color}</TableCell>
-                    <TableCell className={'skin-color' + index}>{person.skin_color}</TableCell>
-                    <TableCell className={'eye-color' + index}>{person.eye_color}</TableCell>
-                  </TableRow>
-                );
-              })
-            }
+            {people.map((person, index) => (
+              <TableRow
+                hover
+                onClick={event => this.handleClick(event, person.url)}
+                tabIndex={-1}
+                key={index}
+                className={'person-row' + index}
+              >
+                <TableCell className={'name' + index}>{person.name}</TableCell>
+                <TableCell className={'height' + index}>{person.height}</TableCell>
+                <TableCell className={'hair-color' + index}>{person.hair_color}</TableCell>
+                <TableCell className={'skin-color' + index}>{person.skin_color}</TableCell>
+                <TableCell className={'eye-color' + index}>{person.eye_color}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
         <TablePagination
@@ -92,7 +79,6 @@ class PeopleTable extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    fetchingPeople: state.fetchingPeople,
     personId: state.personId,
     people: state.people,
     peopleCount: state.peopleCount,

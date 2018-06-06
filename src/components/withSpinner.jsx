@@ -56,10 +56,12 @@ const withSpinner = (Component, fetching, text = 'Loading...') => (
   (props) => (
     <WrappedContainer>
       <Component {...props} />
-      <SpinnerContainer>
-        <Spinner />
-        <SpinnerText>{text}</SpinnerText>
-      </SpinnerContainer>
+      {fetching
+      ? <SpinnerContainer>
+          <Spinner />
+          <SpinnerText>{text}</SpinnerText>
+        </SpinnerContainer>
+      : (null)}
     </WrappedContainer>
   )
 );

@@ -18,7 +18,7 @@ const reducer = (state = initialState, action) => {
     case(actionTypes.REQUEST_PERSON):
     const { fetchingPerson, url } = payload;
     // We don't have ID's so we strip the ID off the end of the URL
-    const personId = payload.url.split('/').filter(segment => segment != "")[0];
+    const personId = url.split('/').filter(segment => segment !== "")[0];
 
     return {
       ...state,
