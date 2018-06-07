@@ -43,7 +43,7 @@ describe('PeopleTable', () => {
     );
   });
 
-  it('should follow the flow from index page to detail page', async () => {
+  it('should show the loader when fetching and cache/paginate correctly', async () => {
     httpMock.onGet('https://swapi.co/api/people/?page=1').reply(200, {
       status: 'success',
       results: peopleOne,
