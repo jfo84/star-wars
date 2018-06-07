@@ -33,6 +33,9 @@ class PeopleTable extends Component {
   };
 
   handleClick = (event, url) => {
+    // Hack around the lack of ID's by passing the payload URL here and the
+    // url from the router in Person
+    // They will both be parsed in the action creator and return the same ID
     this.props.fetchPerson(url);
   };
 

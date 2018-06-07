@@ -56,12 +56,11 @@ export const fetchPeople = () => {
   }
 };
 
-const requestPerson = (url) => {
+const requestPerson = () => {
   return {
     type: actionTypes.REQUEST_PERSON,
     payload: {
-      fetching: true,
-      url
+      fetching: true
     }
   };
 };
@@ -79,15 +78,14 @@ const receivePerson = (response, personId) => {
 
 export const fetchPerson = (url) => {
   return (dispatch) => {
-    dispatch(requestPerson(url));
+    dispatch(requestPerson());
 
     const options = {};
+    // We don't have ID's so we strip the ID off the end of the URL
+    const segments = url.split('/').filter(segment => segment !== "");
+    const personId = segments[segments.length - 1];
 
-    return axios.get(url, options).then((response) => {
-      // We don't have ID's so we strip the ID off the end of the URL
-      const segments = url.split('/').filter(segment => segment !== "");
-      const personId = segments[segments.length - 1];
-
+    return axios.get(`${PEOPLE_URL}${personId}`, options).then((response) => {
       dispatch(receivePerson(response, personId));
     });
   }

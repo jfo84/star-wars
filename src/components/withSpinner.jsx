@@ -12,6 +12,7 @@ const SpinnerContainer = styled.div`
   left: 0;
   z-index: 1000;
   position: fixed;
+  background: #F5F5F5;
 `;
 
 const spinnerKeyframes = keyframes`

@@ -4,6 +4,7 @@ import {
   TableCell,
   TableRow
 } from 'material-ui/Table';
+import styled from 'styled-components';
 
 const headerData = [
   { id: 'name', label: 'Name', disablePadding: false },
@@ -13,19 +14,23 @@ const headerData = [
   { id: 'eye_color', label: 'Eye Color', disablePadding: false }
 ];
 
+const StandardCell = styled(TableCell)`
+  & {
+    min-width: 120px;
+  }
+`;
+
 const PeopleTableHead = (props) => (
   <TableHead>
     <TableRow>
-      {headerData.map(header => {
-        return (
-          <TableCell
-            key={header.id}
-            padding={header.disablePadding ? 'none' : 'default'}
-          >
-            {header.label}
-          </TableCell>
-        );
-      })}
+      {headerData.map(header => (
+        <StandardCell
+          key={header.id}
+          padding={header.disablePadding ? 'none' : 'default'}
+        >
+          {header.label}
+        </StandardCell>
+      ))}
     </TableRow>
   </TableHead>
 );
