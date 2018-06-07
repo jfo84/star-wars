@@ -53,13 +53,15 @@ const WrappedContainer = styled.div`
 `;
 
 const withSpinner = (Component, text = 'Loading...') => (
-  ({ fetching, ...rest }) => (
+  (props) => (
     <WrappedContainer>
-      <Component {...rest} />
-      {fetching
-      ? <SpinnerContainer>
+      <Component {...props} />
+      {props.fetching
+      ? <SpinnerContainer className='spinner-container'>
           <Spinner />
-          <SpinnerText>{text}</SpinnerText>
+          <SpinnerText className='spinner-text'>
+            {text}
+          </SpinnerText>
         </SpinnerContainer>
       : (null)}
     </WrappedContainer>

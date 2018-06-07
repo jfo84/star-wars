@@ -73,8 +73,8 @@ class PeopleTable extends Component {
           rowsPerPage={perPage}
           rowsPerPageOptions={[]}
           page={zeroIndexPage}
-          backIconButtonProps={{ 'aria-label': 'Previous Page' }}
-          nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+          backIconButtonProps={{ 'aria-label': 'Previous Page', 'className': 'previous-page' }}
+          nextIconButtonProps={{ 'aria-label': 'Next Page', 'className': 'next-page'  }}
           onChangePage={this.handleChangePage}
         />
       </TableContainer>

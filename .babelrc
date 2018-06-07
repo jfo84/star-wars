@@ -1,0 +1,17 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "8.0"
+      }
+    }],
+    "react",
+    "stage-1",
+    "es2015"
+  ],
+  "plugins": [
+    "transform-react-jsx",
+    "transform-object-rest-spread",
+    "transform-class-properties"
+  ]
+}
