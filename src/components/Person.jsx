@@ -17,11 +17,15 @@ const PersonTableHead = ({ name }) => (
       <TableCell>
         {name}
       </TableCell>
+      <TableCell>
+      </TableCell>
     </TableRow>
   </TableHead>
 );
 
 let TableContainer = styled.div`
+  margin: 10px;
+  border: 1px solid black;
   max-width: 700px;
 `;
 

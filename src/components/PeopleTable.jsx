@@ -15,6 +15,8 @@ import PeopleTableHead from './PeopleTableHead';
 import withSpinner from './withSpinner';
 
 let TableContainer = styled.div`
+  margin: 10px;
+  border: 1px solid black;
 `;
 
 class PeopleTable extends Component {

@@ -16,7 +16,7 @@ const headerData = [
 
 const StandardCell = styled(TableCell)`
   & {
-    min-width: 120px;
+    min-width: 100px;
   }
 `;
 
