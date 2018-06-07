@@ -56,6 +56,16 @@ export const fetchPeople = () => {
   }
 };
 
+export const removePerson = () => {
+  return {
+    type: actionTypes.REMOVE_PERSON,
+    payload: {
+      data: {},
+      id: null
+    }
+  };
+};
+
 const requestPerson = () => {
   return {
     type: actionTypes.REQUEST_PERSON,

@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import Button from 'material-ui/Button';
 import Table, {
   TableBody,
   TableHead,
   TableCell,
   TableRow
 } from 'material-ui/Table';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
-import { fetchPerson } from '.././actions';
+import { fetchPerson, removePerson } from '.././actions';
 
 const PersonTableHead = ({ name }) => (
   <TableHead>
@@ -23,10 +24,20 @@ const PersonTableHead = ({ name }) => (
   </TableHead>
 );
 
-let TableContainer = styled.div`
+const BackButton = styled(Button)`
+  && {
+    margin: 15px 15px 5px 15px;
+  }
+`;
+
+const PersonContainer = styled.div`
+`;
+
+const TableContainer = styled.div`
   margin: 10px;
-  border: 1px solid black;
   max-width: 700px;
+  border: 1px solid black;
+  border-radius: 5px;
 `;
 
 const WHITELISTED_ATTRS = ['height', 'mass', 'hair_color', 'skin_color', 'eye_color', 'birth_year', 'gender'];
@@ -54,30 +65,43 @@ class Person extends Component {
   }
 
   render() {
-    const { person } = this.props;
+    const { person, personId, removePerson } = this.props;
+
+    if (!personId) {
+      return <Redirect to="/people" />;
+    }
 
     return(
-      <TableContainer>
-        <Table>
-          <PersonTableHead name={person.name} />
-          <TableBody>
-            {Object.keys(person).filter(attr => WHITELISTED_ATTRS.includes(attr)).map((attr, index) => {
-              const attrValue = person[attr];
-              const label = HEADER_MAP[attr];
+      <PersonContainer>
+        <BackButton
+          variant='raised'
+          onClick={event => removePerson()}
+          className='back-button'
+        >
+          Back to People
+        </BackButton>
+        <TableContainer>
+          <Table>
+            <PersonTableHead name={person.name} />
+            <TableBody>
+              {Object.keys(person).filter(attr => WHITELISTED_ATTRS.includes(attr)).map((attr, index) => {
+                const attrValue = person[attr];
+                const label = HEADER_MAP[attr];
 
-              return(
-                <TableRow
-                  tabIndex={-1}
-                  key={index}
-                  className={'attribute-row' + index}>
-                  <TableCell className={'attribute' + index}>{label}</TableCell>
-                  <TableCell className={'value' + index}>{attrValue}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                return(
+                  <TableRow
+                    tabIndex={-1}
+                    key={index}
+                    className={'attribute-row' + index}>
+                    <TableCell className={'attribute' + index}>{label}</TableCell>
+                    <TableCell className={'value' + index}>{attrValue}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </PersonContainer>
     );
   }
 }
@@ -85,13 +109,15 @@ class Person extends Component {
 const mapStateToProps = (state) => {
   return {
     person: state.person.data,
+    personId: state.person.id,
     fetching: state.person.fetching
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchPerson: (url) => { dispatch(fetchPerson(url)) }
+    fetchPerson: (url) => { dispatch(fetchPerson(url)) },
+    removePerson: () => { dispatch(removePerson()) }
   };
 };
 

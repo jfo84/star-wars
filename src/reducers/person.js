@@ -20,6 +20,11 @@ const person = (state = initialState, action) => {
         ...state,
         ...payload
       };
+    case(actionTypes.REMOVE_PERSON):
+      return {
+        ...state,
+        ...payload
+      };
     default:
       return state;
   }

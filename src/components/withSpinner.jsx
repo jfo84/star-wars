@@ -13,6 +13,7 @@ const SpinnerContainer = styled.div`
   z-index: 1000;
   position: fixed;
   background: #F5F5F5;
+  opacity: 0.7;
 `;
 
 const spinnerKeyframes = keyframes`
