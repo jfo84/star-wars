@@ -5,7 +5,7 @@ const initialState = {
   perPage: 10
 };
 
-const reducer = (state = initialState, action) => {
+const page = (state = initialState, action) => {
   switch(action.type) {
     case(actionTypes.CHANGE_PAGE):
       return {
@@ -17,4 +17,4 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export default reducer;
+export default page;

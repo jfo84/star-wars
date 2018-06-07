@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { push } from 'react-router-redux';
 
 import * as actionTypes from './actionTypes';
 
@@ -38,7 +37,8 @@ const populatePeople = (people) => {
 export const fetchPeople = () => {
   return (dispatch, getState) => {
     const { page, people } = getState();
-    const cachedPeople = people.cache[page.index];
+    const { index } = page;
+    const cachedPeople = people.cache[index];
     // If we hit the cache, trigger a state change
     // be re-populating people and don't fetch
     if (cachedPeople) {
@@ -50,8 +50,8 @@ export const fetchPeople = () => {
 
     const options = {};
     
-    return axios.get(`${PEOPLE_URL}?page=${page.index}`, options).then((response) => {
-      dispatch(receivePeople(response, page));
+    return axios.get(`${PEOPLE_URL}?page=${index}`, options).then((response) => {
+      dispatch(receivePeople(response, index));
     });
   }
 };
@@ -66,12 +66,13 @@ const requestPerson = (url) => {
   };
 };
 
-const receivePerson = (response) => {
+const receivePerson = (response, personId) => {
   return {
     type: actionTypes.RECEIVE_PERSON,
     payload: {
       fetching: false,
-      data: response.data
+      data: response.data,
+      id: personId
     }
   };
 };
@@ -87,8 +88,7 @@ export const fetchPerson = (url) => {
       const segments = url.split('/').filter(segment => segment !== "");
       const personId = segments[segments.length - 1];
 
-      dispatch(receivePerson(response));
-      dispatch(push(`/person/${personId}`));
+      dispatch(receivePerson(response, personId));
     });
   }
 };

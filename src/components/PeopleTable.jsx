@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import Table, {
   TableBody,
@@ -10,14 +10,20 @@ import Table, {
 } from 'material-ui/Table';
 
 import { fetchPerson, fetchPeople, changePage } from '.././actions';
+
 import PeopleTableHead from './PeopleTableHead';
+import withSpinner from './withSpinner';
 
 let TableContainer = styled.div`
 `;
 
 class PeopleTable extends Component {
   componentWillMount() {
-    this.props.fetchPeople();
+    const { fetching, fetchPeople } = this.props;
+
+    if (!fetching) {
+      fetchPeople();
+    }
   }
 
   handleChangePage = (event, page) => {
@@ -31,9 +37,13 @@ class PeopleTable extends Component {
   };
 
   render() {
-    const { people, peopleCount, page, perPage } = this.props;
+    const { personId, people, peopleCount, page, perPage } = this.props;
 
     const zeroIndexPage = page - 1;
+
+    if (personId) {
+      return <Redirect to={`/person/${personId}`} />;
+    }
 
     return(
       <TableContainer>
@@ -74,6 +84,9 @@ class PeopleTable extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    // Display the spinner on initial load or when transitioning
+    // to the detail page
+    fetching: state.people.fetching || state.person.fetching,
     personId: state.person.id,
     people: state.people.data,
     peopleCount: state.people.count,
@@ -90,4 +103,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PeopleTable));
+export default connect(mapStateToProps, mapDispatchToProps)(withSpinner(PeopleTable));

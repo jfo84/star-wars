@@ -8,36 +8,27 @@ import grey from 'material-ui/colors/grey';
 
 import {
   createStore, 
-  applyMiddleware, 
+  applyMiddleware,
   combineReducers
 } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import {
-  ConnectedRouter, 
-  routerReducer,
-  routerMiddleware
-} from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
 
 import App from './App';
 import './index.css';
 
-// Redux and Routing
+// Redux
 import pageReducer from './reducers/page';
 import peopleReducer from './reducers/people';
 import personReducer from './reducers/person';
 
-const history = createHistory();
-const historyMiddleware = routerMiddleware(history);
-const createStoreWithMiddleware = applyMiddleware(thunk, historyMiddleware)(createStore);
-const store = createStoreWithMiddleware(
+const store = createStore(
   combineReducers({
     page: pageReducer,
     people: peopleReducer,
-    person: personReducer,
-    routing: routerReducer
-  })
+    person: personReducer
+  }),
+  applyMiddleware(thunk)
 );
 
 // Material UI
@@ -52,9 +43,7 @@ const theme = createMuiTheme({
 render(
   <MuiThemeProvider theme={theme}>
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <App />
-      </ConnectedRouter>
+      <App />
     </Provider>
   </MuiThemeProvider>,
   document.getElementById('root')
