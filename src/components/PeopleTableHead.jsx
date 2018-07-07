@@ -21,7 +21,7 @@ const StandardCell = styled(TableCell)`
   }
 `;
 
-const PeopleTableHead = (props) => (
+const PeopleTableHead = () => (
   <TableHead>
     <TableRow>
       {headerData.map(header => (
