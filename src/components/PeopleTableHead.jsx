@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
+import { pure } from 'recompose';
 import {
   TableHead,
   TableCell,
@@ -20,23 +21,19 @@ const StandardCell = styled(TableCell)`
   }
 `;
 
-class PeopleTableHead extends PureComponent {
-  render() {
-    return(
-      <TableHead>
-        <TableRow>
-          {headerData.map(header => (
-            <StandardCell
-              key={header.id}
-              padding={header.disablePadding ? 'none' : 'default'}
-            >
-              {header.label}
-            </StandardCell>
-          ))}
-        </TableRow>
-      </TableHead>
-    );
-  }
-}
+const PeopleTableHead = (props) => (
+  <TableHead>
+    <TableRow>
+      {headerData.map(header => (
+        <StandardCell
+          key={header.id}
+          padding={header.disablePadding ? 'none' : 'default'}
+        >
+          {header.label}
+        </StandardCell>
+      ))}
+    </TableRow>
+  </TableHead>
+);
 
-export default PeopleTableHead;
+export default pure(PeopleTableHead);
